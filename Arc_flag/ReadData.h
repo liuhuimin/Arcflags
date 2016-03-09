@@ -114,7 +114,7 @@ void LoadClass(Graph &graph, char *file_class)//加载分类信息
 		for (int j = 0; j < graph.vertices[i].edges.size(); j++)
 		{
 			graph.vertices[i].edges[j].sign.setK(graph.part);//分块内边标记
-			if (graph.classes[graph.vertices[i].edges[j].id_to]==graph.classes[i])
+			if (graph.classes[graph.vertices[i].edges[j].id_to] == graph.classes[i])
 				graph.vertices[i].edges[j].sign.setBit(graph.classes[i], true);
 			else//添加各分块出口点
 			{

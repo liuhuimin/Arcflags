@@ -38,7 +38,7 @@ int Dijkstra(Graph & graph, int s, int t, int *label, int *path, vector<pair<int
 		flag[id] = FINISHED;
 		id = Q.Top();
 		Q.Pop();
-		search.push_back(pair<int, int>(path[id], id));//保存搜索节点，是在这里还是在switch中使得内容更精细？
+		//search.push_back(pair<int, int>(path[id], id));//保存搜索节点，是在这里还是在switch中使得内容更精细？
 	}
 	delete(flag);
 	return label[t];

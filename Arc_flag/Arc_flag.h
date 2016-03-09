@@ -1,5 +1,6 @@
 void Arc_flag(Graph & graph, int s, int *label, int *path)
 {
+	
 	int classes = graph.classes[s];
 	int *flag = new int[graph.vertices.size()];//搜索状态的标记
 	memset(flag, 0, sizeof(int)*graph.vertices.size());
@@ -20,7 +21,7 @@ void Arc_flag(Graph & graph, int s, int *label, int *path)
 		
 		for (int i = 0; i < graph.vertices[id].edges.size(); i++)
 		{
-			if (graph.vertices[id].edges[i].id_to == path[id]&&graph.classes[id]!=classes)//找到路径的上一节点，标记该边
+			if (graph.vertices[id].edges[i].id_to == path[id])//&&graph.classes[id]!=classes)//找到路径的上一节点，标记该边
 			{
 				graph.vertices[id].edges[i].sign.setBit(classes,true);
 				break;
@@ -134,9 +135,9 @@ int Arc_flag_query(Graph & graph, int s, int t, int *label, int *path,vector<pai
 		flag[id] = FINISHED;
 		id = Q.Top();
 		Q.Pop();
-		cout << id << endl;
-		if (id == -1)
-			break;
+		//cout << id << endl;
+		//if (id == -1)
+		//	break;
 		//search.push_back(pair<int, int>(path[id], id));//保存搜索节点，是在这里还是在switch中使得内容更精细？
 	}
 	delete(flag);

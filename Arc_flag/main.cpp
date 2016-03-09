@@ -52,7 +52,7 @@ void main()
 	QueryPerformanceCounter(&begin);
 	Graph graph;
 	LoadGraph_gr(graph, "E:\\gis\\USA-road-d.Ny.gr", "E:\\gis\\USA-road-d.ny.co");
-	LoadClass(graph, "E:\\gis\\ny_metis.graph.part.8");
+	LoadClass(graph, "E:\\gis\\ny_metis.graph.part.16");
 	QueryPerformanceCounter(&end);
 	precom1 = secondsPerTick * (end.QuadPart - begin.QuadPart);
 	printf("load all data cost time:%fus\n", precom1);
@@ -75,7 +75,7 @@ void main()
 	srand(time(0));
 	double dijktime=0, astartime=0, flagdtime=0,flagatime=0,preflag=0;
 	
-	for (int i = 0; i < 1; i++)//使用Arc_flag算法预处理图数据并统计时间
+	for (int i = 0; i < 3; i++)//使用Arc_flag算法预处理图数据并统计时间
 	{
 		QueryPerformanceCounter(&begin);
 		Arc_flag_sign(graph);
@@ -84,8 +84,8 @@ void main()
 		preflag += precom1;
 		
 	}
-	printf("precompute cost time:%fus\n", preflag/1);
-	int N = 1;
+	printf("precompute cost time:%fus\n", preflag/3);
+	int N = 1000;
 	
 	for (int i = 0; i < N; i++)
 	{
@@ -96,15 +96,16 @@ void main()
 
 		int s = (exRand() % (graph.vertices.size() - 1) + 1);
 		int t = (exRand() % (graph.vertices.size() - 1) + 1);
-		s = 222525;
-		t = 244893;
-		cout << "s:" << s << "t:" << t << endl;
+		//s = 79765;
+		//t = 144179;
+		//cout << "s:" << s << "t:" << t << endl;
+		//cout << "s class:" << graph.classes[s] << " t:" << graph.classes[t] << endl;
 		//使用dijkstra算法计算路径并统计时间
 		QueryPerformanceCounter(&begin);
 		int dist = Dijkstra(graph, s, t, label, path, search);
 		QueryPerformanceCounter(&end);
 		precom1 = secondsPerTick * (end.QuadPart - begin.QuadPart);
-		cout << "d" << endl;
+		//cout << "d" << endl;
 		dijktime += precom1;
 		//printf("dijkstra cost time test:%fus\n", precom1);
 		//cout << "dijkstra distance" << dist << endl;
@@ -125,7 +126,7 @@ void main()
 		precom1 = secondsPerTick * (end.QuadPart - begin.QuadPart);
 		astartime += precom1;
 		//printf("astar cost time test:%fus\n", precom1);
-		cout << "a" << endl;
+		//cout << "a" << endl;
 		//cout << "astar distance" << dist2 << endl;
 
 		//使用Arc_flag算法预处理图数据并统计时间
@@ -136,11 +137,11 @@ void main()
 		QueryPerformanceCounter(&begin);
 		int *label1 = new int[graph.vertices.size()];
 		int *path1 = new int[graph.vertices.size()];
-		//int dist1 = Arc_flag_query(graph, s, t, label1, path1, search1);
+		int dist1 = Arc_flag_query(graph, s, t, label1, path1, search1);
 		QueryPerformanceCounter(&end);
 		precom1 = secondsPerTick * (end.QuadPart - begin.QuadPart);
 		flagdtime += precom1;
-		cout << "fd" << endl;
+		//cout << "fd" << endl;
 		//printf("arcflags query cost time test:%fus\n", precom1);
 
 		//WriteSearch("D:\\usa-road-ny_arcflag.dat", graph, search1);
@@ -154,11 +155,20 @@ void main()
 		QueryPerformanceCounter(&end);
 		precom1 = secondsPerTick * (end.QuadPart - begin.QuadPart);
 		flagatime += precom1;
+		//cout << "s class:" << graph.classes[s] << " t:" << graph.classes[t] << endl;
 		//printf("arcflags query astar cost time test:%fus\n", precom1);
-		cout << "dist:" << dist << "  dist1:";// << dist1 << "  dist2:" << dist3 << endl;
+		cout << "dijkstra dist:" << dist <<" a* dist:"<<dist2<< " flags dijk:" << dist1 << " flag a*:" << dist3 << endl;
 		int route = path[t];
 		int route1 = path1[t];
 
+		delete[] label;
+		delete[] label1;
+		delete[] label2;
+		delete[] label3;
+		delete[] path;
+		delete[] path1;
+		delete[] path2;
+		delete[] path3;
 		/*//对比路径
 		while (route==route1&&route != s)
 		{
@@ -191,4 +201,5 @@ void main()
 	printf("flag dijkstra cost time:%fus\n", flagdtime / N);
 	printf("flag A* cost time:%fus\n", flagatime / N);
 	printf("precompute cost time:%fus\n", preflag / 3);
+	system("pause");
 }
